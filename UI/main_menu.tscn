@@ -1,0 +1,101 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkqpxfrqlrndy"]
+
+[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_f2rrb"]
+
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("new_game_button", "load_button", "save_button", "settings_button", "exit_button")]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f2rrb")
+new_game_button = NodePath("MenuAspectRatio/PanelContainer/VBoxContainer/NewGameButton")
+load_button = NodePath("MenuAspectRatio/PanelContainer/VBoxContainer/LoadButton")
+save_button = NodePath("MenuAspectRatio/PanelContainer/VBoxContainer/SaveButton")
+settings_button = NodePath("MenuAspectRatio/PanelContainer/VBoxContainer/SettingsButton")
+exit_button = NodePath("MenuAspectRatio/PanelContainer/VBoxContainer/ExitButton")
+
+[node name="BackGroundAspectRatio" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 1.7778
+
+[node name="TextureRect" type="TextureRect" parent="BackGroundAspectRatio"]
+layout_mode = 2
+
+[node name="MenuAspectRatio" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 1.7778
+
+[node name="PanelContainer" type="PanelContainer" parent="MenuAspectRatio"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuAspectRatio/PanelContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MenuAspectRatio/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NewGameButton" type="Button" parent="MenuAspectRatio/PanelContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../ExitButton")
+focus_neighbor_bottom = NodePath("../LoadButton")
+focus_next = NodePath("../LoadButton")
+focus_previous = NodePath("../ExitButton")
+text = "New Game"
+
+[node name="LoadButton" type="Button" parent="MenuAspectRatio/PanelContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../NewGameButton")
+focus_neighbor_bottom = NodePath("../SaveButton")
+focus_next = NodePath("../SaveButton")
+focus_previous = NodePath("../NewGameButton")
+text = "Load"
+
+[node name="SaveButton" type="Button" parent="MenuAspectRatio/PanelContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../LoadButton")
+focus_neighbor_bottom = NodePath("../SettingsButton")
+focus_next = NodePath("../SettingsButton")
+focus_previous = NodePath("../LoadButton")
+text = "Save"
+
+[node name="SettingsButton" type="Button" parent="MenuAspectRatio/PanelContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../SaveButton")
+focus_neighbor_bottom = NodePath("../ExitButton")
+focus_next = NodePath("../ExitButton")
+focus_previous = NodePath("../SaveButton")
+text = "Settings"
+
+[node name="ExitButton" type="Button" parent="MenuAspectRatio/PanelContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../SettingsButton")
+focus_neighbor_bottom = NodePath("../NewGameButton")
+focus_next = NodePath("../NewGameButton")
+focus_previous = NodePath("../SettingsButton")
+text = "Exit"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="MenuAspectRatio/PanelContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="MenuAspectRatio/PanelContainer/VBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="MenuAspectRatio/PanelContainer/VBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="MenuAspectRatio/PanelContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="MenuAspectRatio/PanelContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
