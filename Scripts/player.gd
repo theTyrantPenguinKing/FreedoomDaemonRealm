@@ -6,14 +6,22 @@ extends CharacterBody3D
 @export_range(-90.0, -45.0, 0.1, "radians_as_degrees") var lower_tilt_angle : float = deg_to_rad(-75)
 @export_range(45.0, 90, 0.1, "radians_as_degrees") var upper_tilt_angle : float = deg_to_rad(75)
 
-@export_group("Player Head")
+@export_group("Player Nodes")
 @export var head : Node3D
+@export var animation_player : AnimationPlayer
+@export var crouch_shape_cast : ShapeCast3D
 
 var speed : float = 4.5
 var jump_speed : float = 4.0
+var crouch_speed : float = 3
 
 var direction : Vector3
 var mouse_input : Vector2
+
+var is_crouching : bool = false
+
+func _ready() -> void:
+	crouch_shape_cast.add_exception(self)
 
 func _physics_process(delta: float) -> void:
 	if self.position.y < -100:
@@ -31,12 +39,15 @@ func _physics_process(delta: float) -> void:
 
 # gets how much the player wants to rotate
 func _unhandled_input(event: InputEvent) -> void:
-
 	if event is InputEventMouseMotion:
 		mouse_input.x = deg_to_rad(-event.relative.x * \
 		horizontal_mouse_sensitivity)
 		mouse_input.y = deg_to_rad(-event.relative.y * \
 		vertical_mouse_sesnsitivity)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("crouch"):
+		is_crouching
 
 # handles horizontal movement
 func horizontal_movement() -> void:
@@ -52,6 +63,9 @@ func vertical_movement() -> void:
 	if is_on_floor():
 		if Input.is_action_pressed("jump"):
 			velocity.y = jump_speed
+		
+		if Input.is_action_just_pressed("crouch"):
+			crouching(is_crouching)
 
 # applies gravity to the player
 func apply_gravity(delta : float) -> void:
@@ -76,3 +90,16 @@ func update_camera() -> void:
 	
 	# reset the mouse_input
 	mouse_input = Vector2.ZERO
+
+func crouching(state : bool):
+	if crouch_shape_cast.is_colliding() == false:
+		match state:
+			true:
+				if not animation_player.is_playing():
+					animation_player.play("crouch", -1, -crouch_speed, true)
+			false:
+				if not animation_player.is_playing():
+					animation_player.play("crouch", -1, crouch_speed)
+
+func _on_animation_player_animation_started(anim_name: StringName) -> void:
+	is_crouching = not is_crouching
