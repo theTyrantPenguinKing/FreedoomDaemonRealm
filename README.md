@@ -14,7 +14,7 @@ Planed weapons:
        1         KATANA                            NONE                  NONE                        NONE
        2         PISTOL                            PISTOL BULLET         15                          180
        3         SHOTGUN                           SHOTGUN BULLET        8                           120
-       3         COMBAT SHOTGUN                    SHOTGUN BULLET        8                           120
+       3         COMBAT SHOTGUN                    SHOTGUN BULLET        2                           120
        4         AK-2174M                          ASSAULT BULLET        30                          450
        4         MINIGUN                           ASSAULT BULLET        100                         450
        5         ROCKET LAUNCHER                   ROCKET                1                           150
