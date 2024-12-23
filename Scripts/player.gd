@@ -45,10 +45,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		mouse_input.y = deg_to_rad(-event.relative.y * \
 		vertical_mouse_sesnsitivity)
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("crouch"):
-		is_crouching
-
 # handles horizontal movement
 func horizontal_movement() -> void:
 	if direction:
@@ -93,13 +89,18 @@ func update_camera() -> void:
 
 func crouching(state : bool):
 	if crouch_shape_cast.is_colliding() == false:
+		var current_animation_name : String = \
+		animation_player.get_current_animation()
 		match state:
 			true:
-				if not animation_player.is_playing():
-					animation_player.play("crouch", -1, -crouch_speed, true)
+				if current_animation_name == "crouch":
+					await animation_player.animation_finished
+				animation_player.play("crouch", -1, -crouch_speed, true)
 			false:
-				if not animation_player.is_playing():
-					animation_player.play("crouch", -1, crouch_speed)
+				if current_animation_name == "crouch":
+					await animation_player.animation_finished
+				animation_player.play("crouch", -1, crouch_speed)
 
 func _on_animation_player_animation_started(anim_name: StringName) -> void:
-	is_crouching = not is_crouching
+	if anim_name == "crouch":
+		is_crouching = not is_crouching
